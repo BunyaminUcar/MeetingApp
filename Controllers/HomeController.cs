@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Xml.Serialization;
+using MeetingApp.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MeetingApp.Controllers
 {
@@ -6,7 +8,21 @@ namespace MeetingApp.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            int time = DateTime.Now.Hour;
+            
+            ViewBag.SayHi= time > 12 ? "İyi günler" : "Günaydın";
+            int UserCount = Repository.Users.Where(i => i.WillAttend == true).Count();
+            //ViewBag.Name = "Bünyamin";
+
+            var meetinginfo = new MeetingInfo()
+            {
+                Id = 1,
+                Location = "İstanbul",
+                Date = new DateTime(2024, 01, 14, 20, 0, 0),
+                NumberOfPeople = UserCount
+            };
+
+            return View(meetinginfo);
         }
 
        
